@@ -1,3 +1,11 @@
+extras:
+  healthchecks: &healthchecks
+    hooks:
+      failure:
+        - 'curl -m 10 --retry 5 -X POST -H "Content-Type: text/plain" --data "Backup failed for location: ${AUTORESTIC_LOCATION}" https://hc-ping.com/0ae12711-519f-484f-b5ba-eef6fe5c5e49/fail'
+      success:
+        - 'curl -m 10 --retry 5 -X POST -H "Content-Type: text/plain" --data "Backup successful for location: ${AUTORESTIC_LOCATION}" https://hc-ping.com/0ae12711-519f-484f-b5ba-eef6fe5c5e49'
+
 backends:
   garage:
     type: s3
@@ -15,6 +23,7 @@ global:
     keep-weekly: 4
 locations:
   audiobooks:
+    <<: *healthchecks  
     from:
     - /source/home/audiobookshelf
     type: ""
@@ -31,6 +40,7 @@ locations:
     options: {}
     copyoption: {}
   backups:
+    <<: *healthchecks    
     from:
     - /source/backups
     type: ""
@@ -47,6 +57,7 @@ locations:
     options: {}
     copyoption: {}
   dokploy:
+    <<: *healthchecks    
     from:
     - /source/dokploy
     type: ""
@@ -63,6 +74,7 @@ locations:
     options: {}
     copyoption: {}
   home:
+    <<: *healthchecks    
     from:
     - /source/home
     type: ""
