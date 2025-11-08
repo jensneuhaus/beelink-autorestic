@@ -1,0 +1,84 @@
+backends:
+  garage:
+    type: s3
+    path: http://192.168.178.105:3900/dokploy-backup/restic
+    key: TYAKOuvtCccE2U5KBXg58g5F7Ss07MaQJIEl9LAPWL96fTOhNPfzebeNjtexfsyggS9V42yoc266XUU0XQ
+    requirekey: false
+    env: {}
+    rest:
+      user: ""
+      password: ""
+    options: {}
+global:
+  forget:
+    keep-daily: 7
+    keep-weekly: 4
+locations:
+  audiobooks:
+    from:
+    - /source/home/audiobookshelf
+    type: ""
+    to:
+    - garage
+    hooks:
+      dir: ""
+      prevalidate: []
+      before: []
+      after: []
+      success: []
+      failure: []
+    cron: 0 4 * * 0
+    options: {}
+    copyoption: {}
+  backups:
+    from:
+    - /source/backups
+    type: ""
+    to:
+    - garage
+    hooks:
+      dir: ""
+      prevalidate: []
+      before: []
+      after: []
+      success: []
+      failure: []
+    cron: 0 2 * * *
+    options: {}
+    copyoption: {}
+  dokploy:
+    from:
+    - /source/dokploy
+    type: ""
+    to:
+    - garage
+    hooks:
+      dir: ""
+      prevalidate: []
+      before: []
+      after: []
+      success: []
+      failure: []
+    cron: 0 3 * * *
+    options: {}
+    copyoption: {}
+  home:
+    from:
+    - /source/home
+    type: ""
+    to:
+    - garage
+    hooks:
+      dir: ""
+      prevalidate: []
+      before: []
+      after: []
+      success: []
+      failure: []
+    cron: 0 3 * * *
+    options:
+      backup:
+        exclude:
+        - /source/home/audiobookshelf/**
+    copyoption: {}
+version: 2
